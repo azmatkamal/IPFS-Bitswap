@@ -1,0 +1,22 @@
+{
+  "name": "node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src",
+    "dev": "nodemon src",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "bignumber.js": "^9.0.1",
+    "ipfs": "^0.54.4",
+    "ipfs-api": "^26.1.2",
+    "ipfs-bitswap": "^5.0.1",
+    "ipfs-core": "^0.5.4",
+    "nodemon": "^2.0.7"
+  }
+}
