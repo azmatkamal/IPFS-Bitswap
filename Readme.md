@@ -18,7 +18,7 @@ NOTE:
 
 FETCH INFO EVERY 5 SEC: npm start --loop=true
 
-INCREASE FETCH INTERVAL: npm start --loop=true --sec=10000   //10 SEC
+INCREASE FETCH INTERVAL: npm start --loop=true --sec=10000
 
 MINIMUM/DEFAULT INTERVAL TIMING IS 5 SEC OR 5000 MILISEC
 
