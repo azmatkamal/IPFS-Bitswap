@@ -83,8 +83,8 @@ if (process.env.npm_config_loop && process.env.npm_config_loop == "true") {
 
   let i = 0;
   let timer = setInterval(async () => {
-    ++i;
     await run();
-    if (i === loopsize) clearInterval(timer);
+    if (i === loopsize - 1) clearInterval(timer);
+    ++i;
   }, sec);
 }
