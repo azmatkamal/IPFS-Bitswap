@@ -1,12 +1,13 @@
 const BigNumber = require("bignumber.js");
 const axios = require("axios");
 const ipfsAPI = require("ipfs-api");
+const Excel = require("./exportData");
 
 const initIPFSObject = async () => {
   return ipfsAPI("/ip4/127.0.0.1/tcp/5001");
 };
 
-const getStats = async (ipfs) => {
+const getStats = async (ipfs, time) => {
   const stats = await ipfs.bitswap.stat();
 
   const {
@@ -33,6 +34,28 @@ const getStats = async (ipfs) => {
   console.log("wantListLength: " + new BigNumber(wantListLength));
   console.log("peerCount: " + new BigNumber(peerCount).toFixed());
 
+  const columns = [
+    { header: "Data Received", key: "dataReceived" },
+    { header: "Data Sent", key: "dataSent" },
+    { header: "Blocks Received", key: "blocksReceived" },
+    { header: "Blocks Sent", key: "blocksSent" },
+  ];
+  const data = [
+    {
+      dataReceived: new BigNumber(dataReceived).toFixed(),
+      dataSent: new BigNumber(dataSent).toFixed(),
+      blocksReceived: new BigNumber(blocksReceived).toFixed(),
+      blocksSent: new BigNumber(blocksSent).toFixed(),
+      // dupBlksReceived: new BigNumber(dupBlksReceived).toFixed(),
+      // dupDataReceived: new BigNumber(dupDataReceived).toFixed(),
+      // providesBufferLength: new BigNumber(providesBufferLength).toFixed(),
+      // wantListLength: new BigNumber(wantListLength),
+      // peerCount: new BigNumber(peerCount).toFixed(),
+    },
+  ];
+
+  Excel.exportData(columns, data, `${time}-IPFS-Stats`);
+
   return stats;
 };
 
@@ -53,7 +76,14 @@ const getPeerLedger = async (peer, ignoreUnwantedPeers = false) => {
           console.log("  Data Sent: " + Sent);
           console.log("  Data Received: " + Recv);
           console.log("  Data Exchanged: " + Exchanged);
-          return data;
+
+          return {
+            peerid: Peer,
+            val: Value,
+            sent: Sent,
+            rec: Recv,
+            exch: Exchanged,
+          };
         }
       } else {
         console.log("Peer ID: " + Peer);
@@ -73,7 +103,7 @@ const getPeerLedger = async (peer, ignoreUnwantedPeers = false) => {
   return null;
 };
 
-const getWantList = async (ipfs) => {
+const getWantList = async (ipfs, time) => {
   const list = await ipfs.bitswap.wantlist();
 
   let keys = [];
@@ -90,6 +120,13 @@ const getWantList = async (ipfs) => {
     returnList.push(cid);
   }
 
+  const columns = [{ header: "Want List", key: "wantlist" }];
+  const data = returnList.map((i) => {
+    return { wantlist: i };
+  });
+
+  Excel.exportData(columns, data, `${time}-IPFS-WantList`);
+
   return returnList;
 };
 
@@ -97,7 +134,10 @@ const getBlockStats = async (ipfs, cid) => {
   try {
     const stats = await ipfs.block.stat(cid);
     console.log("Block Stats: ID => " + cid + "    Size => " + stats.size);
-    return stats;
+    return {
+      cid,
+      size: stats.size,
+    };
   } catch (e) {
     // console.log(e);
   }

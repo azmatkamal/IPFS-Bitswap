@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node src",
     "dev": "nodemon src",
+    "loop" : "npm start --loop=true --sec=10000 --loopsize=5",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -13,6 +14,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "bignumber.js": "^9.0.1",
+    "exceljs": "^4.2.1",
     "ipfs": "^0.54.4",
     "ipfs-api": "^26.1.2",
     "ipfs-bitswap": "^5.0.1",
