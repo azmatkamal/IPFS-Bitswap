@@ -76,7 +76,7 @@ if (process.env.npm_config_loop && process.env.npm_config_loop == "true") {
 
   if (
     process.env.npm_config_loopsize &&
-    parseInt(process.env.npm_config_loopsize) > 5000
+    parseInt(process.env.npm_config_loopsize) > 1
   ) {
     loopsize = parseInt(process.env.npm_config_loopsize);
   }
