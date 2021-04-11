@@ -38,7 +38,7 @@ const run = async () => {
     ];
     const data = peersData && peersData.length ? peersData : [];
 
-    Excel.exportData(columns, data, `${sysTime}-IPFS-Peer-Blocks`);
+    Excel.exportData(columns, data, `${sysTime}-IPFS-Peer-Ledger`);
   }
   console.log("=============== PEER INFO END ==================\n");
 
