@@ -1,5 +1,6 @@
 const app = require("./app");
 const Excel = require("./exportData");
+const fs = require("fs");
 
 const run = async () => {
   let sysTime = new Date();
@@ -23,10 +24,12 @@ const run = async () => {
 
   console.log("\n****** THIS SECTIONS SHOWS HOW MUCH PEERS CONTRIBUTED ******");
   console.log("=============== PEER INFO STARTS ==================");
+  let ledgerData = [];
   if (peers) {
     const peersData = [];
     for (let i = 0; i < peers.length; i++) {
-      peersData.push(await app.getPeerLedger(peers[i], true));
+      let p = await app.getPeerLedger(peers[i], true);
+      if (p) peersData.push(p);
     }
 
     const columns = [
@@ -36,14 +39,15 @@ const run = async () => {
       { header: "Data Received", key: "rec" },
       { header: "Data Exchanged", key: "exch" },
     ];
-    const data = peersData && peersData.length ? peersData : [];
+    ledgerData = peersData && peersData.length ? peersData : [];
 
-    Excel.exportData(columns, data, `${sysTime}-IPFS-Peer-Ledger`);
+    Excel.exportData(columns, ledgerData, `${sysTime}-IPFS-Peer-Ledger`);
   }
   console.log("=============== PEER INFO END ==================\n");
 
   console.log("\n****** THIS SECTIONS SHOWS BLOCK INFO ******");
   console.log("=============== BLOCK INFO STARTS ==================");
+  let blockData = [];
   if (wantList) {
     const blocksData = [];
     for (let i = 0; i < wantList.length; i++) {
@@ -54,11 +58,26 @@ const run = async () => {
       { header: "CID", key: "cid" },
       { header: "Block Size", key: "size" },
     ];
-    const data = blocksData && blocksData.length ? blocksData : [];
+    blockData = blocksData && blocksData.length ? blocksData : [];
 
-    Excel.exportData(columns, data, `${sysTime}-IPFS-Peer-Blocks`);
+    Excel.exportData(columns, blockData, `${sysTime}-IPFS-Peer-Blocks`);
   }
   console.log("=============== BLOCK INFO END ==================\n");
+
+  let jsonData = {};
+  jsonData.wantlist = wantList;
+  jsonData.stats = stats;
+  jsonData.ledgerData = ledgerData;
+  jsonData.blockData = blockData;
+
+  fs.writeFile(
+    `exports/${sysTime}-IPFS-Data.json`,
+    JSON.stringify(jsonData),
+    function (err) {
+      if (err) throw err;
+      console.log("Data Exported to Excel");
+    }
+  );
 };
 
 run();
