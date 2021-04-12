@@ -22,6 +22,15 @@ const run = async () => {
 
   let peers = stats.peers;
 
+  if (peers && peers.length) {
+    console.log(
+      "\n****** THIS SECTIONS SHOWS HOW MUCH PEERS CONTRIBUTED ******"
+    );
+    console.log("=============== PEER LIST STARTS ==================");
+    console.log(peers);
+    console.log("=============== PEER LIST ENDs ==================");
+  }
+
   console.log("\n****** THIS SECTIONS SHOWS HOW MUCH PEERS CONTRIBUTED ******");
   console.log("=============== PEER INFO STARTS ==================");
   let ledgerData = [];
@@ -75,7 +84,7 @@ const run = async () => {
     JSON.stringify(jsonData),
     function (err) {
       if (err) throw err;
-      console.log("Data Exported to Excel");
+      console.log("Data Exported to JSON");
     }
   );
 };

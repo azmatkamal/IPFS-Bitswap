@@ -139,7 +139,7 @@ const getBlockStats = async (ipfs, cid) => {
       size: stats.size,
     };
   } catch (e) {
-    // console.log(e);
+    console.log(e);
   }
   return null;
 };
