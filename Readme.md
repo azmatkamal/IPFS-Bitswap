@@ -1,3 +1,5 @@
+IPFS Bitswap - Peers contribution monitoring app.<br/>
+
 INSTALL IPFS
 
 INITIALIZE USING CMD : ipfs daemon
